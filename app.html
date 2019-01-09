@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<!-- Set Style for interface -->
+<style>
+	.square{
+
+		margin: 200px auto;
+
+		width: 200px;
+
+		height: 200px;
+
+		background: gray; 
+	}
+
+	.grid-container {
+	  display: grid;
+	  grid-template-columns: auto auto auto;
+	  grid-gap: 10px;
+	  background-color: #FFFFFF;
+	  padding: 10px;
+	}
+
+	.grid-container > div {
+	  background-color: rgba(255, 255, 255, 0.4);
+	  border: 1px;
+	  text-align: center;
+	  font-size: 30px;
+	}
+</style>
+<head>
+	<!-- Main Involt Functions -->
+	<title>BioMixer</title>
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+	<!-- Involt source-->
+	<script src="core/jquery/jquery-2.1.0.min.js"></script>
+	<script src="core/jquery/jquery.nouislider.min.js"></script>
+	<script src="core/jquery/jquery.knob.js"></script>
+	<script src="core/jquery/insQ.min.js"></script>
+	<script src="settings.js"></script>
+	<script src="core/bridge.js"></script>
+	<script src="core/framework.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/framework.css">
+	
+	<!-- Custom Styles (Bootstrap) -->
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+	<div>
+		<h1><center> Preparing a Mix </center></h1>
+	</div>
+		<!-- Setting the Material Dispenser Face-->
+		  <div class="grid-container">
+			  <div>Material 1</div>
+			  <div>Material 2</div>
+			  <div>Material 3</div>
+			  <div>
+				<!-- Send a Value between 0 - 255 to a pin simulating a Material dispenser -->
+				<div></div>
+				<div class="ard rangeslider P11 value-0 range-0-255 step-1"></div>
+			  </div>
+			  <div>
+				<div></div>				
+				<div class="ard rangeslider P10 value-0 range-0-255 step-1"></div>
+			  </div>  
+		       <div>
+				<div></div>
+				<div class="ard rangeslider P9 value-0 range-0-255 step-1"></div>
+			  </div>
+		 </div>
+
+	<!--This is the homepage of your App. Put your Layout Here-->
+	
+	<<!-- Turn on a pin (13) simulating open or closing a gate-->
+	<div class="ard toggle P13"> <h1>Pin 13</h1></div>
+
+	<!-- Reading an analog input simulating reciving signal from a sensor -->	
+	<div class="ard bar A0 range-0-1024"></div>
+	
+	<!-- Show Interface Description -->	
+	<div id="involtThankYou">FabLab Uchile BioMixer Interface 1.0</div>
+	
+	<!-- Create a square using the data from analog input-->
+	<div class="square"></div>
+	<script src="customjquery.js"></script>
+	<link rel="stylesheet" type="text/css" href="customstyle.css"> 
+	<script>
+		setInterval(function(){
+
+			$(".square").css({
+
+			"width": involt.pin.A[0],
+
+			"height": involt.pin.A[0],
+
+			//"transform": "rotate("+involt.pin.A[1]+"deg)"
+
+			});
+			},50); 
+	</script>	
+
+</body>
+
+</html>
