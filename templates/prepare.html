@@ -8,7 +8,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Mixing!</title>
+    <title>Prepare Mix</title>
 
     <!-- Fonts -->
     <link rel="stylesheet" href="/static/fontawesome-free-5.6.3-web/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
@@ -17,6 +17,9 @@
     <!-- Style and Colors -->
     <link rel="stylesheet" href="/static/bootstrap4-neon-glow.min.css">
     <link rel='stylesheet' href='//cdn.jsdelivr.net/font-hack/2.020/css/hack.min.css'>
+
+    <!-- Script -->
+    <script type=text/javascript src="{{ url_for('static', filename='jquery.js') }}"></script>
   </head>
 
   <body>
@@ -59,7 +62,7 @@
             <span class="badge badge-primary badge-pill">4 base materials available</span>
           </h4>
           <!-- Listed Container-->
-          <from action = "{{ url_for('mixing') }}">
+          <form id="proportion" method="post">
           <ul class="list-group">
             <!-- Material 1 -->
             <li class="list-group-item d-flex justify-content-between lh-condensed">
@@ -68,7 +71,7 @@
                   <small class="text-muted">Use: binder Type: polysaccharide Origin: alga </small>
                 </div>
                 <div class = "col-3" style="text-align: right">
-                  <rigth><input type="number" class="form-control" id="Agar" placeholder="0 (g)" required onchange="sumar(this.value, 0)"></rigth>
+                  <rigth><input type="number" class="form-control" name="agar" id="agar" placeholder="0 (g)" required onchange="tagg(this.value, 0)"></rigth>
                 </div>
             </li>
             <!-- Material 2 -->
@@ -78,7 +81,7 @@
                 <small class="text-muted">Use: Type: poly-ol Origin: propylene (not bio ingredient :( ) </small>
               </div>
               <div class = "col-3" style="text-align: right">
-                <rigth><input type="number" class="form-control" id="Glycerin" placeholder="0 (ml)" required onchange="sumar(this.value, 1)"></rigth>
+                <rigth><input type="number" class="form-control" id="glycerin" placeholder="0 (ml)" required onchange="tagg(this.value, 1)"></rigth>
               </div>
             </li>
             <!-- Material 3 -->
@@ -88,7 +91,7 @@
                 <small class="text-muted">Use: solvent Type: water plus ions and unknown traces Origin: uncertain</small>
               </div>
               <div class = "col-3" style="text-align: right">
-                <rigth><input type="number" class="form-control" id="water" placeholder="0 (ml)" required onchange="sumar(this.value, 2)"></rigth>
+                <rigth><input type="number" class="form-control" id="water" placeholder="0 (ml)" required onchange="tagg(this.value, 2)"></rigth>
               </div>
             </li>
             <!-- Material 4 -->
@@ -106,7 +109,7 @@
                 </select>
               </div>
               <div class = "col-3" style="text-align: right">
-                <rigth><input type="number" class="form-control" id="Additive" placeholder="0 (g)" required onchange="sumar(this.value, 3)"></rigth>
+                <rigth><input type="number" class="form-control" id="Additive" placeholder="0 (g)" required onchange="tagg(this.value, 3)"></rigth>
               </div>
             </li>
             <!-- Total -->
@@ -116,25 +119,26 @@
             </li>
             <!-- Submit -->
             <li class="list-group-item d-flex justify-content-between">
-              <right></right><a type="submit" class="btn btn-primary" href="{{ url_for('mixing') }}">Mix</a></right>
+                <right></right><a id="send" type="submit" class="btn btn-primary">Mix</a></right>
             </li>
           </ul>
-          </from>
+          </form>
         </div>
       </div>
-      <small class="text-muted">BioMixer Interface 1.1 FabLab Uchile</small>
+      <small class="text-muted">BioMixer Interface 1.1 FabLab Uchile </small>
+      <div><left></left><small id="ready" class="text-muted" onchange="load">Mix status: not ready</small></div>
     </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+   <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <script>
         var values = [0,0,0,0];
         /* Sumar dos números. */
         function sumar (valor1, indice) {
-            valor = parseFloat(valor1); // Convertir el valor a un entero (número).
+            valor = parseFloat(valor1); // Convertir el valor a un float (número).
             if (values[indice] != valor){
             	if (isNaN(valor)){
                 	valor = 0;
@@ -152,7 +156,55 @@
         // Colocar el resultado de la suma en el control "span".
         document.getElementById('sum').innerHTML = values[3];
         }
+
+        function tagg (value, index){
+            var val= parseFloat(value);
+            if (values[index] != val) {
+                if (isNaN(val)) {
+                    val = 0;
+                }
+                values[index] = val;
+                var i;
+                var tag = "";
+                for (i = 0; i < 3; i++) {
+                    tag = tag + values[i] + "/";
+                }
+            }
+            document.getElementById('sum').innerHTML = tag;
+        }
     </script>
+    <script type=text/javascript>
+        /*
+        function getdata() {
+              var a = document.getElementById('agar').innerHTML;
+              var g = document.getElementById('glycerin').innerHTML;
+              var w = document.getElementById('water').innerHTML;
+
+              // Storing data:
+              var myObj = {agar: a, glyc: g, water: w};
+              var myJSON = JSON.stringify(myObj);
+              $.post("a", a, function(){});
+              window.location.assign("{{ url_for('mixing') }}");
+          }*/
+        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+          $(function() {
+            $('a#send').on('click', function() {
+              $.getJSON($SCRIPT_ROOT + '/mixing', {
+                agar: $('input[id="agar"]').val(),
+                glyc: $('input[id="glycerin"]').val(),
+                water: $('input[id="water"]').val()
+              }, function() {
+                $("#ready").text("Mix status: ready");
+                window.location.assign("{{ url_for('mix') }}");
+              });
+              return false;
+            });
+          });
+          function load() {
+
+          }
+        </script>
+        <script type=text/javascript src="{{ url_for('static', filename='jquery.js') }}"></script>
   </body>
 
 </html>
