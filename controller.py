@@ -1,5 +1,7 @@
 """
 Main settings and functions to work from the server to Arduino Devices.
+Developed in practical work for FabLab Uchile
+danisa@fablab.uchile.cl
 By: Marcelo Becerra A.
 marcelo.becerra@ug.uchile.cl
 """
