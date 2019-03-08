@@ -40,6 +40,7 @@
         <center><div class="lead mb-3 text-mono text-success">Making your Mix. Please Relax and wait</div></center>
 
         <div class='row'>
+            <!-- Show Temperature -->
             <div class="col-6">
                 <h4>Temperature Monitor</h4>
                 <div id = "progress">
@@ -49,6 +50,7 @@
                     <p id="demo"></p>
                 </div>
             </div>
+            <!-- Mix quanties -->
             <div class="col-6">
                 <h4>Mix information</h4>
                 <p>agar</p>
@@ -59,6 +61,7 @@
                 <small class="text-muted" id="glyc"> q3 </small>
             </div>
         </div>
+        <!-- Actualize temp  monitor -->
         <script type=text/javascript>
             var t;
             setInterval(actualize,3000);
@@ -71,6 +74,7 @@
                return false;
             });}
         </script>
+            
             <script type=text/javascript>
               var tempBar = document.getElementById("tempBar");
               var width = 0;
@@ -85,6 +89,8 @@
                   tempBar.style.width = width*2 + '%';
                 }
               }
+              
+              //Test information
               // Storing data:
               var myObj = {name: "HI", age: 31, city: "New York"};
               var myJSON = JSON.stringify(myObj);
@@ -96,6 +102,7 @@
               obj = JSON.parse(text);
               document.getElementById("demo").innerHTML = obj.name;
         </script>
+        <!-- Test Function -->
         <script type=text/javascript>
           //jquery
           $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
@@ -111,6 +118,7 @@
             });
           });
         </script>
+        
         <script>
             document.getElementById("agar").innerHTML = {{ agarq }};
             document.getElementById("water").innerHTML = {{ waterq }} ;
