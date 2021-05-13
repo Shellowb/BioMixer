@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block HEAD %}
+    <link rel="stylesheet" href="{% static 'css/progressbar.css' %}">
+{% endblock %}
+
+{% block body %}
+<div id="dashboard" class="container shadow">
+    <div id="first-row" class="row">
+        <div id="pipeline" class="container border-info">
+            <h4> Avance del Proceso (Estado)</h4>
+            <div class="row">
+                <div class="col-10">
+                    <ul id="progressbar">
+                        <li class="active" id="account"><strong>Agragar Materiales</strong></li>
+                        <li id="personal"><strong>Revolver</strong></li>
+                        <li id="payment"><strong>Cocinar</strong></li>
+                        <li id="confirm"><strong>Terminado</strong></li>
+                    </ul>
+                </div>
+                <div class="col-2">
+                    <button class="btn-success button ">
+                        Start
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="second-row" class="row">
+        <div id="security-status" class="col-4 container">
+            <h4> Indicadores de Seguridad</h4>
+        </div>
+        <div id="space" class="col-4 container">
+            <span style="width: 5em"></span>
+        </div>
+        <div id="composition" class="col-4 container">
+            <h4> Composición del Material</h4>
+            <canvas id="myChart" width="400" height="400"></canvas>
+        </div>
+    </div>
+    <div id="third-row" class="row">
+        <div id="" class="col-4 container">
+            <h4> Otro Panel</h4>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block JS %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.js"></script>
+    <script id="Sample">
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: [ 'Agua', 'Glicerina', 'Agar-Agar', 'Borra',],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 7, 5],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.4)',
+                        'rgba(255, 206, 86, 0.4)',
+                        'rgba(75, 192, 192, 0.4)',
+                        'rgba(153, 102, 255, 0.4)',
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+    </script>
+{% endblock %}
