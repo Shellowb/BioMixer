@@ -15,14 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.conf import settings
-from django.conf.urls.static import static
 from django.views.generic import TemplateView
+from django.conf.urls.static import static
+from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('interface.urls', namespace="interface")),
-    path('react/', TemplateView.as_view(template_name=''))
+    path('', include('back_end.urls', namespace="back_end")),
+    path('react/', TemplateView.as_view(template_name='index.html'))
 ]
 
-urlpatterns += static(settings.STATIC_INTERFACE_URL, document_root=settings.STATIC_INTERFACE_ROOT)
-
+urlpatterns += static(settings.MEDIA_URL, documet_root=settings.MEDIA_ROOT)

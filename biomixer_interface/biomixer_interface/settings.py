@@ -11,10 +11,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os.path
 from pathlib import Path
+import socket
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -25,7 +25,29 @@ SECRET_KEY = 'django-insecure-d_$yqsl=&j_s+7v=yf1mgruv*gngmquife)1461f58=qxe@3e=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
+def get_ip() -> str:
+    """
+    open a socket an try to connect to any direction
+    an then get the "socket name" if ther is no local
+    network, return machine self direction localhost.
+    Close de socket, and return IP.
+    :return: String, he Ip of the server in a Local Network
+    """
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        # doesn't even have to be reachable
+        s.connect(('10.255.255.255', 1))
+        IP = s.getsockname()[0]
+    except Exception:
+        IP = '127.0.0.1'
+    finally:
+        s.close()
+    return IP
+
+
+LAN_HOST = get_ip()
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', LAN_HOST]
 
 CORS_ORIGIN_ALLOW_ALL = True    # check for security in ajax
 # Application definition
@@ -41,11 +63,12 @@ DJANGO_APPS = [
 
 EXTRA_APPS = [
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    #'django_components'
 ]
 
 LOCAL_APPS = [
-    'interface'
+    'back_end'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + EXTRA_APPS
@@ -69,7 +92,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, '../React/biomixer-interface/build')
+            os.path.join(BASE_DIR, 'front_end/build')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -78,6 +101,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # Django components
+                #'django_components.templatetags.component_tags',
             ],
         },
     },
@@ -132,15 +157,25 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
+# Static Files or Project Assets, visual and interactive elements
 STATIC_URL = '/static/'
-STATIC_INTERFACE_ROOT = os.path.join(BASE_DIR, 'assets')
-STATIC_INTERFACE_URL = '../interface/static/'
+STATIC_PATH = os.path.join(BASE_DIR, 'back_end/static')
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, '../React/biomixer-interface/build/static'),
+    os.path.join(BASE_DIR,'back_end/static'),
+    os.path.join(BASE_DIR,'front_end/build/static')
 ]
+
+# Media upload to the Server
+MEDIA_URL = '/back_end.media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, '')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+#SECURE_HSTS_SECONDS = 6000
+#SECURE_SSL_REDIRECT = True

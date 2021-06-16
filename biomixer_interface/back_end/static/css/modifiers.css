@@ -1,0 +1,7 @@
+.hidden_element {
+    visibility: hidden;
+}
+
+.visible_element {
+    visibility: visible;
+}

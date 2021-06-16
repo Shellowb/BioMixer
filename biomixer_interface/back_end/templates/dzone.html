@@ -1,0 +1,44 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Flav icon -->
+    <link rel="icon" href="{% static 'img/biomixer.png'   %}"/>
+    <link rel="stylesheet" href="../static/fontawesome-free-5.6.3-web/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/bootstrap4-neon-glow.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'dropzone/dist/basic.css' %}">
+    <link rel="stylesheet" href="{% static 'dropzone/dist/dropzone.css' %}">
+</head>
+
+<body>
+    <div class="row">
+        <span style="height: 6em"></span>
+    </div>
+    <div class="container">
+        <h1>Upload Zone</h1>
+        <p>Upload your file here, you can drag an drop it!</p>
+        <!-- DROP ZONE-->
+        <form   action="/file-upload"
+                class="dropzone"
+                id="my-dropzone">
+
+            <div class="fallback">
+                <input name="file" type="file" multiple/>
+            </div>
+            {% csrf_token %}
+        </form>
+        <br>
+        <span style="height: 6em"></span>
+        <span id="dzone-submit" class="button btn-success p-2 m-4 rounded-pill" onclick="process()">Subir Archivos</span>
+    </div>
+</body>
+<script src="{% static 'dropzone/dist/dropzone.js' %}"></script>
+<script src="{% static 'dropzone/myDzone.js' %}"></script>
+
+</html>
