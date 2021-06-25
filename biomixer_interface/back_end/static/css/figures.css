@@ -1,0 +1,22 @@
+.mybadge {
+    display: inline-block;
+    padding: 0.25em 0.4em;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 6px; }
+
+.badge:empty {
+    display: none; }
+
+
+.mybadge-pill {
+    padding-right: 0.6em;
+    padding-left: 0.6em;
+    border-radius: 10rem; }
+
+.mybadge-primary {
+    color: #fff;
+    background-color: #04A073; }

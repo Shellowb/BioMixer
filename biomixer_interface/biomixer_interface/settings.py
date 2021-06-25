@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os.path
 from pathlib import Path
 import socket
+from socket import gethostname, gethostbyname
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -47,7 +48,7 @@ def get_ip() -> str:
 
 
 LAN_HOST = get_ip()
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', LAN_HOST]
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', LAN_HOST, gethostname(), gethostbyname(gethostname())]
 
 CORS_ORIGIN_ALLOW_ALL = True    # check for security in ajax
 # Application definition

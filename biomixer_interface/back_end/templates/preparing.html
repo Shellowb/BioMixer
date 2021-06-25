@@ -1,147 +1,50 @@
 {% extends 'base.html' %}
-{% load static %}
-    {% block HEAD %}
-    <style>
-        .form-control { display: inline-block !important; }
-    </style>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Prepare Mix</title>
-
-    <!-- Fonts -->
-    <link rel="stylesheet" href="/static/fontawesome-free-5.6.3-web/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-
-    <!-- Style and Colors -->
-    <link rel="stylesheet" href="/static/bootstrap4-neon-glow.min.css">
-    <link rel='stylesheet' href='//cdn.jsdelivr.net/font-hack/2.020/css/hack.min.css'>
-
-    <!-- Script -->
-    {#  <script type=text/javascript src="{% static 'jquery.js' %}"></script> #}
-    {% endblock %}
 
 {% block body %}
-<!-- Main Body-->
-<div class="container py-5 mb5">
-    <!-- Title -->
-    <h1 class="mb-5">Preparing the Mix</h1>
-    <!-- MATERIALS INPUT -->
-    <div class="row py-4">
-        <!-- Size & Distribution -->
+    <div class="container py-5 mb5">
         <div class="col-md-8 order-md-2 mb-4">
-            <!-- Subtitle -->
-            <h4 class="d-flex justify-content-between align-items-center mb-3">
-                <span class="text-muted">Materials</span>
-                <span class="badge badge-primary badge-pill">4 base materials available</span>
-            </h4>
-            <!-- Listed Container-->
-            <form id="proportion" method="post">
+            <form id="proportion" action="" method="POST">
+                <h3 class="mb-5"> Preparing the Mix </h3>
+                {% csrf_token %}
                 <ul class="list-group">
-                    <!-- Material 1 - BINDER -->
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
-                        <div class="col-9">
-                            <label for="Add">Binder</label>
-                            <select class="custom-select d-block w-100" id="Add" required>
+                    <!-- ¿Is a proportional mix? -->
+                    <li class="list-group-item">
+                        <label for="is_proportional"> Make a proportional Mix</label>
+                        <input onclick="makeVisible('proportional_label')" class="col-3 form-check-inline" type="checkbox" id="proportional" name="is_proportional" value="1">
+                        <div id="proportional_label" style="display: none">
+                            <select class="col-6 custom-select d-block w-100" id="Add">
                                 <option value="">Choose...</option>
-                                <option>Coffee</option>
-                                <option>Cornstarch</option>
-                                <option>Detergent</option>
-                                <option>Orange peel</option>
-                                <option>other</option>
-                                <input style="visibility: hidden">
+                                <option value="g">grams</option>
+                                <option value="ml">milliliters</option>
                             </select>
                         </div>
-                        <div class = "col-3" style="text-align: right">
-                            <rigth><input type="number" class="form-control" id="Additive" placeholder="0 (g)" required onchange="tagg(this.value, 3)"></rigth>
-                        </div>
                     </li>
-                    <!-- Material 2 - PLASTICIZER -->
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
-                        <div class="col-9">
-                            <label for="Add">Plasticizer</label>
-                            <select class="custom-select d-block w-100" id="Add" required>
-                                <option value="">Choose...</option>
-                                <option>Coffee</option>
-                                <option>Cornstarch</option>
-                                <option>Detergent</option>
-                                <option>Orange peel</option>
-                                <option>other</option>
-                                <input style="visibility: hidden">
-                            </select>
-                        </div>
-                        <div class = "col-3" style="text-align: right">
-                            <rigth><input type="number" class="form-control" id="Additive" placeholder="0 (g)" required onchange="tagg(this.value, 3)"></rigth>
-                        </div>
-                    </li>
-                    <!-- Material 3 - PRESERVATIVE -->
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
-                        <div class="col-9">
-                            <label for="Add">Preservative</label>
-                            <select class="custom-select d-block w-100" id="Add" required>
-                                <option value="">Choose...</option>
-                                <option>Coffee</option>
-                                <option>Cornstarch</option>
-                                <option>Detergent</option>
-                                <option>Orange peel</option>
-                                <option>other</option>
-                                <input style="visibility: hidden">
-                            </select>
-                        </div>
-                        <div class = "col-3" style="text-align: right">
-                            <rigth><input type="number" class="form-control" id="Additive" placeholder="0 (g)" required onchange="tagg(this.value, 3)"></rigth>
-                        </div>
-                    </li>
-                    <!-- Material 4 - SUPPORT-->
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
-                        <div class="col-9">
-                            <label for="Add">Support</label>
-                            <select class="custom-select d-block w-100" id="Add" required>
-                                <option value="">Choose...</option>
-                                <option>Coffee</option>
-                                <option>Cornstarch</option>
-                                <option>Detergent</option>
-                                <option>Orange peel</option>
-                                <option>other</option>
-                                <input style="visibility: hidden">
-                            </select>
-                        </div>
-                        <div class = "col-3" style="text-align: right">
-                            <rigth><input type="number" class="form-control" id="Additive" placeholder="0 (g)" required onchange="tagg(this.value, 3)"></rigth>
-                        </div>
-                    </li>
-                    <!-- Material 5 - ORGANIC RESIDUE -->
-                    <li class="list-group-item d-flex justify-content-between lh-condensed">
-                        <div class="col-9">
-                            <label for="Add">Organic Residue</label>
-                            <select class="custom-select d-block w-100" id="Add" required>
-                                <option value="">Choose...</option>
-                                <option>Coffee</option>
-                                <option>Cornstarch</option>
-                                <option>Detergent</option>
-                                <option>Orange peel</option>
-                                <option>other</option>
-                                <input style="visibility: hidden">
-                            </select>
-                        </div>
-                        <div class = "col-3" style="text-align: right">
-                            <rigth><input type="number" class="form-control" id="Additive" placeholder="0 (g)" required onchange="tagg(this.value, 3)"></rigth>
-                        </div>
-                    </li>
-                    <!-- Total -->
-                    <li class="list-group-item d-flex justify-content-between">
-                        <span>Mix Number</span>
-                        <strong><p id="sum"></p></strong>
-                    </li>
+
+                    <!-- Materials -->
+                    {{ formset.management_form }}
+                    {% for form, label in form_pack %}
+                        <li class="list-group-item">
+                            <div class="col-12">
+                                <label>{{ label }}</label>
+                                <div class="row">
+                                    {{ form.material }}
+                                    {{ form.value }}
+                                    {{ form.type }}
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+
                     <!-- Submit -->
                     <li class="list-group-item d-flex justify-content-between">
-                        <right></right><a href="{% url 'back_end:mixing' %}" id="send" type="submit" class="btn btn-primary">Mix</a></right>
+                        <div class="mb-1">
+                            <p id="validate" style="display: none">hello</p>
+                        </div>
+                        <span class="btn btn-primary" onclick="validateInputs('proportion')"> Validate </span>
+                        <input id="send" class="btn btn-fab-purple align-self-end" type="submit" value="Mix">
                     </li>
                 </ul>
             </form>
         </div>
     </div>
-    <small class="text-muted">BioMixer Interface 1.1 FabLab Uchile </small>
-    <div><left></left><small id="ready" class="text-muted" onchange="load">Mix status: not ready</small></div>
-</div>
 {% endblock %}

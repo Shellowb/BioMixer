@@ -3,24 +3,27 @@
 
 {% block HEAD %}
     <link rel="stylesheet" href="{% static 'css/progressbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/figures.css' %}">
 {% endblock %}
 
 {% block body %}
 <div id="dashboard" class="container shadow">
     <div id="first-row" class="row">
         <div id="pipeline" class="container border-info">
-            <h4> Avance del Proceso (Estado)</h4>
-            <div class="row">
+            <h5 class="mybadge mybadge-primary mybadge-pill"> Avance del Proceso (Estado)</h5>
+            <div class="row mt-4">
                 <div class="col-10">
                     <ul id="progressbar">
-                        <li class="active" id="account"><strong>Agragar Materiales</strong></li>
-                        <li id="personal"><strong>Revolver</strong></li>
-                        <li id="payment"><strong>Cocinar</strong></li>
-                        <li id="confirm"><strong>Terminado</strong></li>
+                        {% for material, index in materials_and_index %}
+                        <li class="inactive" id="m{{ index }}"><strong>{{ material }}</strong></li>
+                        {% endfor %}
                     </ul>
                 </div>
-                <div class="col-2">
-                    <button class="btn-success button ">
+                <div class="col-lg">
+                    <button id="toggle" class="btn btn-fab-orange btn-shadow" onclick="linearToggleProgressbar()">
+                        Toggle Material
+                    </button>
+                    <button id="start-stop" class="btn btn-fab-green btn-shadow" onclick="switchStartStop('start-stop')">
                         Start
                     </button>
                 </div>
@@ -28,21 +31,34 @@
 
         </div>
     </div>
+
     <div id="second-row" class="row">
-        <div id="security-status" class="col-4 container">
-            <h4> Indicadores de Seguridad</h4>
+        <div id="security-status" class="col-6 container">
+            <h5 class="mybadge mybadge-primary mybadge-pill"> Indicadores de Seguridad</h5>
+            <div class="row mt-4">
+                <label class="col-xl-4">Posición de la Olla</label>
+                <div class="col-2">
+                    <img src="../static/img/mixing/check.svg" style="width: 30px">
+                </div>
+            </div>
         </div>
-        <div id="space" class="col-4 container">
+        <div id="space" class="col-2 container">
             <span style="width: 5em"></span>
         </div>
         <div id="composition" class="col-4 container">
-            <h4> Composición del Material</h4>
+            <h5 class="mybadge mybadge-primary mybadge-pill"> Composición del Material</h5>
             <canvas id="myChart" width="400" height="400"></canvas>
         </div>
     </div>
+
     <div id="third-row" class="row">
-        <div id="" class="col-4 container">
-            <h4> Otro Panel</h4>
+        <div id="" class="col-12 container align-self-lg-start">
+            <h4 class="mybadge mybadge-primary mybadge-pill"> Machine raw input</h4>
+            <div class="bg-dark">
+                <div class="text-mono" style="width: 100%; height: 10em" >
+                    <p class="text-white">perro</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -57,20 +73,30 @@
         var myChart = new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: [ 'Agua', 'Glicerina', 'Agar-Agar', 'Borra',],
+                labels: [
+                    {% for material in materials %}
+                        '{{ material }}',
+                    {% endfor %}
+                ],
                 datasets: [{
                     label: '# of Votes',
-                    data: [12, 19, 7, 5],
+                    data: [
+                        {% for value in values %}
+                            {{ value }},
+                        {% endfor %}
+                    ],
                     backgroundColor: [
-                        'rgba(54, 162, 235, 0.4)',
-                        'rgba(255, 206, 86, 0.4)',
-                        'rgba(75, 192, 192, 0.4)',
-                        'rgba(153, 102, 255, 0.4)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(93, 102, 255, 1)',
                     ],
                     borderColor: [
                         'rgba(54, 162, 235, 1)',
                         'rgba(255, 206, 86, 1)',
                         'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
                         'rgba(153, 102, 255, 1)',
                     ],
                     borderWidth: 1
@@ -78,7 +104,7 @@
             },
             options: {
                 scales: {
-                    y: {
+                    x: {
                         beginAtZero: true
                     }
                 }
@@ -86,4 +112,5 @@
         });
 
     </script>
+    <script src="../static/js/extraFunctions.js"></script>
 {% endblock %}

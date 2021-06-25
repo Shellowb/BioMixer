@@ -7,8 +7,9 @@ from django.shortcuts import render, redirect
 import socket
 import qrcode
 from django.http import HttpResponse
-from .models import Doc
+from .models import *
 import PIL
+from .forms import MaterialFormSet, Labels
 
 
 class HomePage(View):
@@ -78,6 +79,8 @@ class MixingPage(View):
         :return:
         """
         pass
+        # form = MixForm(request.POST)
+        # if form.is_valid():
 
 
 class PreparingPage(View):
@@ -92,7 +95,9 @@ class PreparingPage(View):
         :param request:
         :return:
         """
-        return render(request, 'preparing.html', context={})
+        formset = MaterialFormSet()
+        return render(request, 'preparing.html', context={'form_pack': zip(formset, Labels.options),
+                                                          'formset': formset})
 
     def post(self, request):
         """
@@ -100,7 +105,25 @@ class PreparingPage(View):
         :param request:
         :return:
         """
-        pass
+        formset = MaterialFormSet(request.POST)
+        if formset.is_valid():
+            n_recipes = Recipe.objects.all().count()+1
+            recipe = Recipe.objects.create(name="New_recipe "+str(n_recipes), tag="", img_link="")
+            i = 0
+            material_list = []
+            material_index = []
+            value_list = []
+            for answer in formset.cleaned_data:
+                Supply.objects.create(recipe=recipe, position=i, material=answer['material'],
+                                      value=answer['value'], type=answer['type'])
+                material_list.append(answer['material'].name)
+                value_list.append(answer['value'])
+                material_index.append(i+1)
+                i += 1
+
+        return render(request, 'mixing.html', context={'materials_and_index': zip(material_list, material_index),
+                                                       'materials': material_list,
+                                                       'values': value_list})
 
 
 class QRConnect(View):
@@ -133,3 +156,5 @@ class DropZone(View):
     def success(request):
         return render(request, 'dzone_success.html')
 
+class LiveOutputs(View):
+    pass
