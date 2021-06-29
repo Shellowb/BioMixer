@@ -22,19 +22,21 @@ class MachineCmd(object):
         self.d2 = 0
         self.d3 = 0
         self.d4 = 0
+        self.d5 = 0
 
     def serialize(self):
-        self.buffer.write(self._struct.pack(self.d1, self.d2, self.d3, self.d4))
+        self.buffer.write(self._struct.pack(self.d1, self.d2, self.d3, self.d4, self.d5))
 
     @staticmethod
     def to_hex(data):
         return ":".join("{:02x}".format(c) for c in data)
 
-    def set_values(self, d1=0, d2=0, d3=0, d4=0):
+    def set_values(self, d1=0, d2=0, d3=0, d4=0, d5=0):
         self.d1 = d1
         self.d2 = d2
         self.d3 = d3
         self.d4 = d4
+        self.d5 = d5
 
     def read(self, line=False, size=1):
         if line is True:
