@@ -124,7 +124,7 @@ class PreparingPage(View):
             # SEND Values
             machine = MachineCmd(port='/dev/ttyACM0')   # Hay que poner el port que vayan a usar aquí
             machine.set_values(d1=value_list[0], d2=value_list[1],
-                               d3=value_list[2], d4=value_list[3])
+                               d3=value_list[2], d4=value_list[3], d5=value_list[4])
             machine.write()
             print(machine.read(size=100))
             # END ARDUINO
