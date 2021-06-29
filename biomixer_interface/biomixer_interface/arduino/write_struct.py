@@ -31,7 +31,20 @@ class MachineCmd(object):
         return ":".join("{:02x}".format(c) for c in data)
 
     def set_values(self, d1=0, d2=0, d3=0, d4=0):
-        pass
+        self.d1 = d1
+        self.d2 = d2
+        self.d3 = d3
+        self.d4 = d4
 
-    def read(self):
-        return bytearray(self.buffer.getvalue())
+    def read(self, line=False, size=1):
+        if line is True:
+            return self.arduino.readline()
+        else:
+            return self.arduino.read(size=size)
+
+    def write(self, message=''):
+        if message == '':
+            self.serialize()
+            self.arduino.write(bytearray(self.buffer.getvalue()))
+        else:
+            self.arduino.write(message.encode('b'))

@@ -125,8 +125,8 @@ class PreparingPage(View):
             machine = MachineCmd(port='/dev/ttyACM0')   # Hay que poner el port que vayan a usar aquí
             machine.set_values(d1=value_list[0], d2=value_list[1],
                                d3=value_list[2], d4=value_list[3])
-            machine.serialize()
-            print(machine.read())
+            machine.write()
+            print(machine.read(size=100))
             # END ARDUINO
         return render(request, 'mixing.html', context={'materials_and_index': zip(material_list, material_index),
                                                        'materials': material_list,
