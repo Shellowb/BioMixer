@@ -1,7 +1,9 @@
 .hidden_element {
     visibility: hidden;
+    display: none;
 }
 
 .visible_element {
     visibility: visible;
+    display: inline;
 }

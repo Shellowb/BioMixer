@@ -124,3 +124,8 @@ function linearToggleProgressbar(){
         toggleProgressBarItem("m5");
     }
 }
+
+const d_zone = {
+    state : [ 'hidden_element', 'visible_element'],
+    current : 0
+}

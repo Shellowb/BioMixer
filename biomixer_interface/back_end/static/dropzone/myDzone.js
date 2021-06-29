@@ -5,6 +5,7 @@ const myDropzone = new Dropzone("#my-dropzone", {
     acceptedFiles: '.csv',
     autoProcessQueue: false,
     addRemoveLinks: true,
+    display: true
 })
 
 function process() {

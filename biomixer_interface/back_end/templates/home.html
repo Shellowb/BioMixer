@@ -1,11 +1,10 @@
 {% extends 'base.html' %}
-{% load static %}
 
 {% block HEAD %}
     <title> Bio Mixer</title>
-    <link rel="stylesheet" href="{% static 'css/modifiers.css' %}">
-    <link rel="stylesheet" href="{% static 'dropzone/dist/basic.css' %}">
-    <link rel="stylesheet" href="{% static 'dropzone/dist/dropzone.css' %}">
+    <link rel="stylesheet" href="../static/css/modifiers.css">
+    <link rel="stylesheet" href="../static/dropzone/dist/basic.css">
+    <link rel="stylesheet" href="../static/dropzone/dist/dropzone.css">
 {% endblock %}
 {%  block body%}
 
@@ -21,6 +20,13 @@
                     </div>
                     <!-- Title -->
                     <div class="lead mb-3 text-mono text-success">Bio Mixer interface 1.1</div>
+                    <!-- Description -->
+                    <div class="text-darkgrey text-mono my-2">Welcome to Bio Mixer. A new experience in Material Fabrication</div>
+                    <!-- Client -->
+                    <p class="text-grey text-spacey">
+                        FabLab Uchile Prototype
+                    </p>
+
                     <div class="text-mono">
                         <!-- Button 1 -->
                         <a href="{% url 'back_end:library' %}"
@@ -35,22 +41,29 @@
                         </a>
 
                         <!-- Button 3 -->
-                        <a id="new_library" onclick=""
+                        <a id="new_library" onclick="makeVisible('dropzone')"
                            class="btn btn-fab-purple btn-shadow px-3 my-2 ml-0 ml-sm-1 text-left">
                             Import a Recipe
                         </a>
                     </div>
-
-                    <!-- Description -->
-                    <div class="text-darkgrey text-mono my-2">Welcome to Bio Mixer. A new experience in Material Fabrication</div>
-                    <!-- Client -->
-                    <p class="mt-5 text-grey text-spacey">
-                        FabLab Uchile Prototype
-                    </p>
                 </div>
                 <div class="col-xl-4">
-                    <div class="container">
-                        <div id="dropzone" class="hidden_element"></div>
+                    <div id="dropzone" class="container hidden_element">
+                        <h1>Upload Zone</h1>
+                        <p>Upload your file here, you can drag an drop it!</p>
+                        <!-- DROP ZONE-->
+                        <form   action="/file-upload"
+                                class="dropzone"
+                                id="my-dropzone">
+
+                            <div class="fallback">
+                                <input name="file" type="file" multiple/>
+                            </div>
+                            {% csrf_token %}
+                        </form>
+                        <br>
+                        <span style="height: 6em"></span>
+                        <span id="dzone-submit" class="button btn-success p-2 m-4 rounded-pill" onclick="process()">Subir Archivos</span>
                     </div>
                 </div>
             </div>
@@ -70,24 +83,7 @@
 {% endblock %}
 
 {% block JS %}
-    <script src="{% static 'js/jquery.js' %}"></script>
-    <script>
-        var clicked = false;
-        $(document).ready(function(){
-                $("#new_library").click(function(){
-                    if (!clicked) {
-                        $("#dropzone").load("{% url 'back_end:dzone' %}")
-                        $("#dropzone").removeClass('hidden_element');
-                        $("#dropzone").addClass('visible_element');
-                        clicked = true;
-                    }
-                    else{
-                        $("#dropzone").load("")
-                        $("#dropzone").removeClass('visible_element');
-                        $("#dropzone").addClass('hidden_element');
-                        clicked = false;
-                    }
-                });
-        });
-    </script>
+    <script src="../static/dropzone/dist/dropzone.js"></script>
+    <script src="../static/dropzone/myDzone.js"></script>
+    <script src="../static/js/extraFunctions.js"></script>
 {% endblock %}
